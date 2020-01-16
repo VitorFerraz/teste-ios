@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		2149DC3A1EFFB714EE0B96A5 /* Pods_easynvestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4C88352ACC11570E8E4EEC /* Pods_easynvestTests.framework */; };
 		490AEC2723CE9E6200E24223 /* HeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490AEC2623CE9E6200E24223 /* HeaderLabel.swift */; };
+		4972241F23D10888008D9F52 /* SimulationStubRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4972241E23D10888008D9F52 /* SimulationStubRepository.swift */; };
+		4972242323D10916008D9F52 /* SimulationMock.json in Resources */ = {isa = PBXBuildFile; fileRef = 4972242223D10916008D9F52 /* SimulationMock.json */; };
+		4972242423D10B62008D9F52 /* Decodable+FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4972242023D108D2008D9F52 /* Decodable+FromJSON.swift */; };
+		4972242523D10B67008D9F52 /* Decodable+FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4972242023D108D2008D9F52 /* Decodable+FromJSON.swift */; };
+		4972242623D10B6B008D9F52 /* SimulationMock.json in Resources */ = {isa = PBXBuildFile; fileRef = 4972242223D10916008D9F52 /* SimulationMock.json */; };
+		4972242823D10ECB008D9F52 /* ResultViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4972242723D10ECB008D9F52 /* ResultViewModelTests.swift */; };
 		4997665C23CD4A2100C6D023 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997665B23CD4A2100C6D023 /* AppDelegate.swift */; };
 		4997666023CD4A2100C6D023 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997665F23CD4A2100C6D023 /* ViewController.swift */; };
 		4997666323CD4A2100C6D023 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4997666123CD4A2100C6D023 /* Main.storyboard */; };
@@ -92,6 +98,10 @@
 		2764FC453C4BCB961C8177B1 /* Pods_easynvest_easynvestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_easynvest_easynvestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		329580016744968D9AA10266 /* Pods-easynvestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-easynvestTests.release.xcconfig"; path = "Target Support Files/Pods-easynvestTests/Pods-easynvestTests.release.xcconfig"; sourceTree = "<group>"; };
 		490AEC2623CE9E6200E24223 /* HeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderLabel.swift; sourceTree = "<group>"; };
+		4972241E23D10888008D9F52 /* SimulationStubRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationStubRepository.swift; sourceTree = "<group>"; };
+		4972242023D108D2008D9F52 /* Decodable+FromJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+FromJSON.swift"; sourceTree = "<group>"; };
+		4972242223D10916008D9F52 /* SimulationMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SimulationMock.json; sourceTree = "<group>"; };
+		4972242723D10ECB008D9F52 /* ResultViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModelTests.swift; sourceTree = "<group>"; };
 		4997665823CD4A2100C6D023 /* easynvest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = easynvest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4997665B23CD4A2100C6D023 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4997665F23CD4A2100C6D023 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +245,9 @@
 			children = (
 				4997667223CD4A2200C6D023 /* easynvestTests.swift */,
 				4997667423CD4A2200C6D023 /* Info.plist */,
+				4972241E23D10888008D9F52 /* SimulationStubRepository.swift */,
+				4972242223D10916008D9F52 /* SimulationMock.json */,
+				4972242723D10ECB008D9F52 /* ResultViewModelTests.swift */,
 			);
 			path = easynvestTests;
 			sourceTree = "<group>";
@@ -481,6 +494,7 @@
 		499766E423CDCFC000C6D023 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4972242023D108D2008D9F52 /* Decodable+FromJSON.swift */,
 				499766E523CDD03A00C6D023 /* Encodable+Dictionary.swift */,
 				4997670223CE790D00C6D023 /* UIView+Constraints.swift */,
 				49F952A423CFCD5400C7F06C /* Double+Formatter.swift */,
@@ -735,6 +749,7 @@
 			files = (
 				4997666823CD4A2200C6D023 /* LaunchScreen.storyboard in Resources */,
 				4997666523CD4A2200C6D023 /* Assets.xcassets in Resources */,
+				4972242623D10B6B008D9F52 /* SimulationMock.json in Resources */,
 				4997666323CD4A2100C6D023 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -743,6 +758,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4972242323D10916008D9F52 /* SimulationMock.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,9 +810,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "
-
-";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\n\n";
 		};
 		62C77BBE2CECD2FDCA3406CF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -876,6 +890,7 @@
 				499766FD23CE719C00C6D023 /* ResultCoordinator.swift in Sources */,
 				499766E023CD57C400C6D023 /* RequestTimeInterval.swift in Sources */,
 				499766B723CD535000C6D023 /* Service.swift in Sources */,
+				4972242423D10B62008D9F52 /* Decodable+FromJSON.swift in Sources */,
 				499766CE23CD54E000C6D023 /* RouterProtocol.swift in Sources */,
 				499766C423CD543C00C6D023 /* RequesterError.swift in Sources */,
 				499766A723CD4CFE00C6D023 /* RoundedButton.swift in Sources */,
@@ -910,7 +925,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4972241F23D10888008D9F52 /* SimulationStubRepository.swift in Sources */,
 				4997667323CD4A2200C6D023 /* easynvestTests.swift in Sources */,
+				4972242523D10B67008D9F52 /* Decodable+FromJSON.swift in Sources */,
+				4972242823D10ECB008D9F52 /* ResultViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1120,8 +1138,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UX2K5XG954;
 				INFOPLIST_FILE = easynvestTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1142,8 +1161,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UX2K5XG954;
 				INFOPLIST_FILE = easynvestTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

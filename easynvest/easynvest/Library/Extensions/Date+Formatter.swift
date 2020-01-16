@@ -11,8 +11,8 @@ extension Date {
     var dateFormat: String {
         return DateFormatter.formatter.string(from: self)
     }
-    
+
     var networkDateFormat: String {
-        return DateFormatter.networkFormat.string(from: self) 
+        return DateFormatter.networkFormat.string(from: self)
     }
 }

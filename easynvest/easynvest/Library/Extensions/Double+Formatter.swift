@@ -14,6 +14,6 @@ extension Double {
     }
 
     var percentFormat: String {
-        return NumberFormatter.percentageFormatter.string(for: self/100) ?? ""
+        return NumberFormatter.percentageFormatter.string(for: self / 100) ?? ""
     }
 }

@@ -24,16 +24,23 @@ final class ResultViewController: AbstractMVVMController<ResultViewModel> {
     fileprivate lazy var amountTitleLabel: HeaderLabel = {
         let label = HeaderLabel()
         label.text = "Resultado da simulação"
+        label.isAccessibilityElement = true
+        label.accessibilityTraits = UIAccessibilityTraits.none
+        label.accessibilityLabel = "Resultado da simulação"
         return label
     }()
-    
+
     fileprivate lazy var amountLabel: HeaderLabel = {
         let label = HeaderLabel()
         label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         label.text = viewModel.amount
+        label.isAccessibilityElement = true
+        label.accessibilityTraits = UIAccessibilityTraits.none
+        label.accessibilityLabel = "Resultado da simulação \(viewModel.amount)"
+
         return label
     }()
-    
+
     fileprivate lazy var profitAmountLabel: HeaderLabel = {
         let label = HeaderLabel()
         let attr = NSMutableAttributedString()
@@ -42,12 +49,15 @@ final class ResultViewController: AbstractMVVMController<ResultViewModel> {
         attr.append(str)
         attr.append(amount)
         label.attributedText = attr
+        label.isAccessibilityElement = true
+        label.accessibilityTraits = UIAccessibilityTraits.none
+        label.accessibilityLabel = "Rendimento total \(viewModel.profitAmount)"
         return label
     }()
-    
+
     fileprivate lazy var detailValueStackView: UIStackView = {
         let initialValue = createLine(with: "Valor aplicado inicialmente", and: viewModel.initialValue)
-        let grossInvestment = createLine(with: "Valor bruto do investimento", and: viewModel.initialValue)
+        let grossInvestment = createLine(with: "Valor bruto do investimento", and: viewModel.grossInvestment)
         let incomeValue = createLine(with: "Valor do rendimento", and: viewModel.incomeValue)
         let incomeTax = createLine(with: "IR sobre investimento", and: viewModel.incomeTax)
         let netAmount = createLine(with: "Valor líquido do investimento", and: viewModel.netAmount)
@@ -56,7 +66,7 @@ final class ResultViewController: AbstractMVVMController<ResultViewModel> {
         stack.spacing = 1
         return stack
     }()
-    
+
     fileprivate lazy var detailDateStackView: UIStackView = {
         let maturityDate = createLine(with: "Data de resgate", and: viewModel.maturityDate)
         let maturityTotalDays = createLine(with: "Dias corridos", and: viewModel.maturityTotalDays)
@@ -69,7 +79,7 @@ final class ResultViewController: AbstractMVVMController<ResultViewModel> {
         stack.spacing = 1
         return stack
     }()
-    
+
     func createLine(with text: String, and value: String) -> UIStackView {
         let titleLabel = LineLabel()
         titleLabel.textAlignment = .left
@@ -79,11 +89,14 @@ final class ResultViewController: AbstractMVVMController<ResultViewModel> {
         valueLabel.text = value
 
         let stack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
+        stack.isAccessibilityElement = true
+        stack.accessibilityTraits = UIAccessibilityTraits.none
+        stack.accessibilityLabel = "\(text) \(value)"
         stack.distribution = .equalSpacing
         return stack
 
     }
-    
+
     fileprivate lazy var resetSimulateButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Simular novamente", for: .normal)
@@ -91,30 +104,32 @@ final class ResultViewController: AbstractMVVMController<ResultViewModel> {
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(simulateTapped), for: .touchUpInside)
         button.isEnabled = true
+        button.isAccessibilityElement = true
+        button.accessibilityTraits = UIAccessibilityTraits.button
+        button.accessibilityLabel = "Simular novamente"
+
         return button
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
     }
-    
+
     override func addViewHierarchy() {
         view.addSubview(overallStackView)
     }
-    
+
     // swiftlint:disable line_length
     override func setupConstraints() {
         overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 4, bottom: 0, right: 4))
         overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         resetSimulateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        
-        
+
     }
-    
+
     @objc fileprivate func simulateTapped() {
         self.navigationController?.popToRootViewController(animated: true)
         viewModel.reset()
     }
-    
-    
+
 }

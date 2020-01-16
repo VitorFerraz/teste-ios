@@ -10,7 +10,7 @@ import Foundation
 struct SimulationRemoteRepository: SimulationRepository {
     var network = NetworkManager<InvestmentService>()
 
-    func simulate(investment: SimulationParameters,_ completion: @escaping (Result<Simulation>) -> Void) {
+    func simulate(investment: SimulationParameters, _ completion: @escaping (Result<Simulation>) -> Void) {
         network.request(service: .calculatorSimulate(investment: investment), result: completion)
     }
 

@@ -13,10 +13,10 @@ extension String {
         styler.minimumFractionDigits = 2
         styler.maximumFractionDigits = 2
         styler.numberStyle = .decimal
-        
+
         let converter = NumberFormatter()
         converter.decimalSeparator = ","
-        
+
         if let result = converter.number(from: self) {
             return result.doubleValue
         } else {
@@ -25,7 +25,7 @@ extension String {
                 return result.doubleValue
             }
         }
-        
+
         return 0.0
     }
 }

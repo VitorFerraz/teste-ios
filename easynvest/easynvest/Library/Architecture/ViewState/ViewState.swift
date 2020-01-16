@@ -10,5 +10,5 @@ import Foundation
 enum ViewState<T> {
     case loading
     case success(value: T?)
-    case error(CustomerError: CustomError)
+    case error(customerError: CustomError)
 }

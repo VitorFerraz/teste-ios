@@ -14,7 +14,7 @@ extension DateFormatter {
         dateFormatter.dateFormat = "dd/MM/yyyy"
         return dateFormatter
     }
-    
+
     static var networkFormat: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"

@@ -24,30 +24,34 @@ final class SimulationViewModel: ViewModelProtocol {
         viewState = .init(nil)
         repository = SimulationRemoteRepository()
     }
-    
+
+    convenience init(repository: SimulationRepository) {
+        self.init()
+        self.repository = repository
+    }
+
     func checkForm() {
         let isFormValid = amount.value != 0.0 && rate.value != 0.0 && date.value != nil
         isEnable.value = isFormValid
     }
-    
+
     func simulate() {
         guard let date = date.value?.networkDateFormat else { return }
-        
+
         let investment = SimulationParameters.init(investedAmount: amount.value, rate: rate.value, maturityDate: date)
         viewState.value = .loading
         repository.simulate(investment: investment) { [weak self] result in
             switch result {
             case .failure(let error):
-                self?.viewState.value = .error(CustomerError: error)
+                self?.viewState.value = .error(customerError: error)
             case .success(let simulation):
                 self?.viewState.value = .success(value: simulation)
             }
         }
     }
-    
+
     func didSimulate(with simulation: Simulation) {
         delegate?.didSimutale(simulation: simulation)
     }
-    
-    
+
 }

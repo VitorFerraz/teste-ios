@@ -1,0 +1,6 @@
+framework module Pods_easynvestTests {
+  umbrella header "Pods-easynvestTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -10,25 +10,106 @@ import XCTest
 @testable import easynvest
 
 class EasynvestTests: XCTestCase {
-
+    var sut: SimulationViewModel!
+    var delegate: SimulateCoordinatorDelegate!
+    var didCallDelegate: Bool!
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        sut = SimulationViewModel(repository: SimulationStubRepository())
+        delegate = self
+        sut.delegate = delegate
+        didCallDelegate = false
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
+        delegate = nil
+        didCallDelegate = nil
+        super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testLoadDataWithSuccess() {
+        sut.amount.value = 10
+        sut.date.value = Date()
+        sut.rate.value = 10
+        sut.simulate()
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        sut.viewState.onMainThread().subscribe { (state) in
+
+            switch state {
+            case .success(let value):
+                XCTAssertNotNil(value)
+            default: break
+
+            }
         }
+    }
+
+    func testCheckFormEmptyAmount() {
+        sut.date.value = Date()
+        sut.rate.value = 10
+        sut.isEnable.onMainThread().subscribe { (status) in
+            XCTAssertFalse(status)
+        }
+
+        sut.simulate()
+    }
+
+    func testCheckFormEmptyDate() {
+        sut.amount.value = 10
+        sut.date.value = nil
+        sut.rate.value = 10
+        sut.isEnable.onMainThread().subscribe { (status) in
+            XCTAssertFalse(status)
+        }
+
+        sut.simulate()
+    }
+
+    func testCheckFormEmptyRate() {
+        sut.amount.value = 10
+        sut.date.value = Date()
+        sut.isEnable.onMainThread().subscribe { (status) in
+            XCTAssertFalse(status)
+        }
+        sut.simulate()
+    }
+
+    func testCheckValidForm() {
+        sut.amount.value = 10
+        sut.rate.value = 10
+        sut.date.value = Date()
+        sut.isEnable.onMainThread().subscribe { (status) in
+            XCTAssertTrue(status)
+        }
+
+        sut.simulate()
+    }
+
+    func testDidCallDelegate() {
+        sut.amount.value = 10
+        sut.rate.value = 10
+        sut.date.value = Date()
+        sut.viewState.onMainThread().subscribe { (state) in
+            switch state {
+            case .success(let value):
+                guard let value = value else {
+                    XCTFail()
+                    return
+                }
+                self.sut.didSimulate(with: value)
+            default: break
+            }
+        }
+
+        sut.simulate()
+    }
+}
+
+extension EasynvestTests: SimulateCoordinatorDelegate {
+    func didSimutale(simulation: Simulation) {
+        didCallDelegate = true
+        XCTAssertTrue(didCallDelegate)
     }
 
 }

@@ -15,12 +15,12 @@ protocol ResultCoordinatorDelegate: class {
 final class ResultCoordinator: NSObject, Coordinator {
     let navigationController: UINavigationController
     let simulation: Simulation
-    
+
     init(navigationController: UINavigationController, simulation: Simulation) {
         self.navigationController = navigationController
         self.simulation = simulation
     }
-    
+
     func start() {
         DispatchQueue.main.async {
             let viewController = ResultViewController()

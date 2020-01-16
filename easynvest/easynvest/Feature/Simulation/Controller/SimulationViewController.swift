@@ -24,14 +24,21 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
     fileprivate lazy var amountLabel: HeaderLabel = {
         let label = HeaderLabel()
         label.text = "Quanto você gostaria de aplicar? *"
+        label.isAccessibilityElement = true
+        label.accessibilityTraits = UIAccessibilityTraits.none
+        label.accessibilityLabel = "Quanto você gostaria de aplicar? *"
+
         return label
     }()
-    
+
     fileprivate lazy var amountTextField: TextField = {
         let textField = TextField()
         textField.placeholder = "R$"
         textField.keyboardType = .decimalPad
         textField.delegate = self
+        textField.isAccessibilityElement = true
+        textField.accessibilityTraits = UIAccessibilityTraits.searchField
+        textField.accessibilityLabel = "Informe o valor para aplicar"
         return textField
     }()
     fileprivate lazy var investimentDateStackView: UIStackView = {
@@ -40,19 +47,26 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
         stack.spacing = 4
         return stack
     }()
-    
+
     fileprivate lazy var rateLabel: HeaderLabel = {
         let label = HeaderLabel()
         label.text = "Qual o percentual do CDI do investimento? *"
+        label.isAccessibilityElement = true
+        label.accessibilityTraits = UIAccessibilityTraits.none
+        label.accessibilityLabel = "Qual o percentual do CDI do investimento? *"
+
         return label
     }()
-    
+
     fileprivate lazy var rateTextField: TextField = {
         let textField = TextField()
         textField.placeholder = "100%"
         textField.keyboardType = .decimalPad
         textField.delegate = self
-        
+        textField.isAccessibilityElement = true
+        textField.accessibilityTraits = UIAccessibilityTraits.searchField
+        textField.accessibilityLabel = "Informe o percentual do CDI do investimento"
+
         return textField
     }()
     fileprivate lazy var rateDateStackView: UIStackView = {
@@ -61,21 +75,29 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
         stack.spacing = 4
         return stack
     }()
-    
+
     fileprivate lazy var investimentDateLabel: HeaderLabel = {
         let label = HeaderLabel()
         label.text = "Qual a data de vencimento do investimento? *"
+        label.isAccessibilityElement = true
+        label.accessibilityTraits = UIAccessibilityTraits.none
+        label.accessibilityLabel = "Qual a data de vencimento do investimento? *"
+
         return label
     }()
-    
+
     fileprivate lazy var investimentDateTextField: TextField = {
         let textField = TextField()
         textField.placeholder = "dia/mês/ano"
         textField.inputView = datePicker
         textField.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
+        textField.isAccessibilityElement = true
+        textField.accessibilityTraits = UIAccessibilityTraits.searchField
+        textField.accessibilityLabel = "Informe data dia/mês/ano"
+
         return textField
     }()
-    
+
     fileprivate lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -84,7 +106,7 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
         datePicker.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
         return datePicker
     }()
-    
+
     fileprivate lazy var simulateButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Simular", for: .normal)
@@ -92,6 +114,10 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
         button.titleLabel?.adjustsFontForContentSizeCategory = true
               button.addTarget(self, action: #selector(simulateTapped), for: .touchUpInside)
         button.isEnabled = false
+        button.isAccessibilityElement = true
+        button.accessibilityTraits = UIAccessibilityTraits.button
+        button.accessibilityLabel = "Simular"
+
         return button
     }()
     override func viewDidLoad() {
@@ -101,29 +127,31 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
         setupNotificationObservers()
         setupTapGesture()
     }
-    
+
     override func addViewHierarchy() {
         view.addSubview(overallStackView)
     }
-    
+
     // swiftlint:disable line_length
     override func setupConstraints() {
         overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
+
         simulateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
     }
-    
-    @objc fileprivate func handleTextChange(textField: UITextField) {
+
+    @objc
+    fileprivate func handleTextChange(textField: UITextField) {
         if textField == investimentDateTextField {
             viewModel.date.value = datePicker.date
         }
     }
-    
-    @objc func datePickerChanged() {
+
+    @objc
+    fileprivate func datePickerChanged() {
         viewModel.date.value = datePicker.date
     }
-    
+
     func configureBindings() {
         viewModel.isEnable.onMainThread().subscribe { [unowned self] isEnable in
             self.simulateButton.isEnabled = isEnable
@@ -135,7 +163,6 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
         viewModel.rate.onMainThread().subscribe { [unowned self] newRate in
             self.rateTextField.text = newRate.percentFormat
             self.viewModel.checkForm()
-            
         }
         viewModel.date.onMainThread().subscribe {[unowned self]  newDate in
             if let date = newDate {
@@ -143,7 +170,7 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
             }
             self.viewModel.checkForm()
         }
-        
+
         viewModel.viewState.onMainThread().subscribe { [unowned self] state in
             switch state {
             case .loading:
@@ -158,70 +185,72 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
                 }
             case .success(let value):
                 self.simulateButton.stopAnimating()
-                guard let value = value else {return}
+                guard let value = value else { return }
                 self.viewModel.didSimulate(with: value)
             case .none:
                 break
             }
         }
     }
-    
+
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
     }
-    
-    @objc fileprivate func handleTapDismiss() {
+
+    @objc
+    fileprivate func handleTapDismiss() {
         self.view.endEditing(true) // dismisses keyboard
     }
-    
+
     fileprivate func setupNotificationObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+
+    deinit {
         NotificationCenter.default.removeObserver(self) // you'll have a retain cycle
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reset()
     }
-    
+
     func reset() {
         rateTextField.text = nil
         amountTextField.text = nil
         investimentDateTextField.text = nil
         simulateButton.isEnabled = false
     }
-    
-    @objc fileprivate func handleKeyboardHide() {
+
+    @objc
+    fileprivate func handleKeyboardHide() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.frame.origin.y = 0 // Move view to original position
         })
     }
-    
-    @objc fileprivate func handleKeyboardShow(notification: Notification) {
+
+    @objc
+    fileprivate func handleKeyboardShow(notification: Notification) {
         // how to figure out how tall the keyboard actually is
         guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = value.cgRectValue
         print("keyboardFrame", keyboardFrame)
-        
+
         // let's try to figure out how tall the gap is from the register button to the bottom of the screen
         let bottomSpace = view.frame.height - overallStackView.frame.origin.y - overallStackView.frame.height
         print(bottomSpace)
-        
+
         let difference = keyboardFrame.height - bottomSpace
         print("difference", difference)
         self.view.frame.origin.y = -difference // Move view 150 points upward
     }
-    
-    @objc fileprivate func simulateTapped() {
+
+    @objc
+    fileprivate func simulateTapped() {
         handleTapDismiss()
         viewModel.simulate()
     }
-    
 }
 
 // MARK: - UITextField Delegate
@@ -232,7 +261,7 @@ extension SimulationViewController: UITextFieldDelegate {
         }
         viewModel.date.value = datePicker.date
     }
-    
+
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -255,7 +284,7 @@ extension SimulationViewController: UITextFieldDelegate {
                 let newRate = viewModel.rate.value * 10.0 + (Double(string) ?? 0.0)
                 viewModel.rate.value = newRate
             }
-            
+
         default:
             break
         }

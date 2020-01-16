@@ -9,5 +9,5 @@
 import Foundation
 
 protocol SimulationRepository {
-    func simulate(investment: SimulationParameters,_ completion: @escaping (Result<Simulation>) -> Void) 
+    func simulate(investment: SimulationParameters, _ completion: @escaping (Result<Simulation>) -> Void)
 }
