@@ -9,6 +9,8 @@
 import UIKit
 
 class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
+    let scrollView = UIScrollView()
+    var currentTextField: UITextField?
     fileprivate lazy var overallStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [amountStackView, investimentDateStackView, rateDateStackView, simulateButton])
         stack.axis = .vertical
@@ -129,14 +131,14 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
     }
 
     override func addViewHierarchy() {
-        view.addSubview(overallStackView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(overallStackView)
     }
 
     // swiftlint:disable line_length
     override func setupConstraints() {
-        overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
-        overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-
+        scrollView.fillSuperviewSafeAreaLayoutGuide()
+        overallStackView.anchor(top: scrollView.topAnchor, leading: scrollView.leadingAnchor, bottom: scrollView.bottomAnchor, trailing: scrollView.trailingAnchor, padding: .init(top: 150, left: 25, bottom: 0, right: 25 ))
         simulateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
     }
 
@@ -225,25 +227,20 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
 
     @objc
     fileprivate func handleKeyboardHide() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.view.frame.origin.y = 0 // Move view to original position
-        })
+       let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        // reset back the content inset to zero after keyboard is gone
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
     }
 
     @objc
     fileprivate func handleKeyboardShow(notification: Notification) {
         // how to figure out how tall the keyboard actually is
-        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardFrame = value.cgRectValue
-        print("keyboardFrame", keyboardFrame)
-
-        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
-        let bottomSpace = view.frame.height - overallStackView.frame.origin.y - overallStackView.frame.height
-        print(bottomSpace)
-
-        let difference = keyboardFrame.height - bottomSpace
-        print("difference", difference)
-        self.view.frame.origin.y = -difference // Move view 150 points upward
+       guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+           else { return }
+           let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height + 40, right: 0.0)
+           scrollView.contentInset = contentInsets
+           scrollView.scrollIndicatorInsets = contentInsets
     }
 
     @objc
@@ -256,10 +253,14 @@ class SimulationViewController: AbstractMVVMController<SimulationViewModel> {
 // MARK: - UITextField Delegate
 extension SimulationViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.currentTextField = textField
         guard textField == investimentDateTextField else {
             return
         }
         viewModel.date.value = datePicker.date
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.currentTextField = nil
     }
 
     func textField(_ textField: UITextField,
